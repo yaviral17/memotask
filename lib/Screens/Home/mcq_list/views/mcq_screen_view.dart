@@ -69,6 +69,10 @@ class _MCQScreenState extends State<MCQScreen> {
         flipKey.currentState!.flip();
       });
     }
+
+    // Shuffling the options
+    widget.viewModel.questions[widget.viewModel.currentQuestionIndex].options
+        .shuffle();
   }
 
   @override
@@ -256,6 +260,8 @@ class _MCQScreenState extends State<MCQScreen> {
   }
 
   List<Widget> questionOptions(BuildContext context) {
+    // Shuffle the options
+
     return List.generate(
       widget.viewModel.questions[widget.viewModel.currentQuestionIndex].options
           .length,
