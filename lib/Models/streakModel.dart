@@ -1,11 +1,11 @@
 import 'dart:developer';
 
 class Streak {
-  final DateTime startDate;
-  final DateTime endDate;
-  final DateTime lastActivity;
-  final int streakLength;
-  final int longestStreak;
+  DateTime startDate;
+  DateTime endDate;
+  DateTime lastActivity;
+  int streakLength;
+  int longestStreak;
   final List<DateTime> streakDates;
 
   Streak({
@@ -23,7 +23,8 @@ class Streak {
         streakLength = json['streakLength'],
         longestStreak = json['longestStreak'],
         lastActivity = DateTime.parse(json['lastActivity']),
-        streakDates = List<DateTime>.from(json['streakDates']);
+        streakDates = List<DateTime>.from(
+            json['streakDates'].map((e) => DateTime.parse(e)).toList());
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -62,10 +63,12 @@ class Streak {
     return Streak(
       startDate: DateTime.now(),
       endDate: DateTime.now(),
-      streakLength: 0,
-      longestStreak: 0,
+      streakLength: 1,
+      longestStreak: 1,
       lastActivity: DateTime.now(),
-      streakDates: [],
+      streakDates: [
+        DateTime.now(),
+      ],
     );
   }
 
@@ -82,6 +85,19 @@ class Streak {
       longestStreak: newLongestStreak,
       lastActivity: newLastActivity,
       streakDates: [...streakDates, newLastActivity],
+    );
+  }
+
+  static Streak emptyStreak() {
+    return Streak(
+      startDate: DateTime.now(),
+      endDate: DateTime.now(),
+      streakLength: 1,
+      longestStreak: 1,
+      lastActivity: DateTime.now(),
+      streakDates: [
+        DateTime.now(),
+      ],
     );
   }
 }

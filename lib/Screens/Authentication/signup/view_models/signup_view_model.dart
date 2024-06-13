@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:memotask/Firestore/firestore_collections_and_documents.dart';
+import 'package:memotask/Models/streakModel.dart';
 import 'package:memotask/Models/usermodel.dart';
 import 'package:memotask/components/snakbars.dart';
 
@@ -91,8 +92,16 @@ class SignUpViewModel extends ChangeNotifier {
       });
 
       // log(user.toString());
-      // await FirebaseFirestore.instance.collection('users').add(user.toJson());
-      // showSuccessSnackBar(context, 'Account created successfully');
+
+      await FirestoreRefrence.setUser(UserModel(
+        name: _name,
+        email: _email,
+        uid: FirebaseAuth.instance.currentUser!.uid,
+        createdAt: DateTime.now(),
+        lastLoginAt: DateTime.now(),
+        streak: Streak.emptyStreak(),
+      ));
+      showSuccessSnackBar(context, 'Account created successfully');
       // Navigator.of(context).pop();
       setIsLoading(false);
       return true;

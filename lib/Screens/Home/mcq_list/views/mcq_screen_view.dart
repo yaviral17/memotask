@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:memotask/Firestore/firestore_collections_and_documents.dart';
+import 'package:memotask/Models/mcqModel.dart';
+import 'package:memotask/Screens/Authentication/login/view_models/login_view_model.dart';
 import 'package:memotask/Screens/Home/mcq_list/view_models/mcq_screen_view_model.dart';
 import 'package:memotask/Screens/Home/mcq_list/views/question_number_header_view.dart';
 import 'package:memotask/Utils/app_size.dart';
@@ -16,8 +18,10 @@ class MCQScreen extends StatefulWidget {
   MCQScreen({
     super.key,
     required this.viewModel,
+    required this.loginViewModel,
   });
   MCQViewModel viewModel;
+  LoginViewModel loginViewModel;
   @override
   State<MCQScreen> createState() => _MCQScreenState();
 }
@@ -32,20 +36,30 @@ class _MCQScreenState extends State<MCQScreen> {
 
   final flipKey = GlobalKey<PageFlipBuilderState>();
 
-  void onFlip(isFront) async {
+  Future<void> onFlip(bool isFront, BuildContext context) async {
     // if (isFront) {
     //   widget.viewModel.setCurrentQuestionIndex(
     //     widget.viewModel.currentQuestionIndex + 1,
     //   );
     // }
-    if (!isFront) {
-      await FirestoreRefrence.postQuestion(
-          FirebaseAuth.instance.currentUser!.uid,
-          widget.viewModel.questions[widget.viewModel.currentQuestionIndex]);
-      await FirestoreRefrence.updateStreak(
-          FirebaseAuth.instance.currentUser!.uid);
 
+    if (!isFront) {
+      String uid = FirebaseAuth.instance.currentUser!.uid;
+
+      await FirestoreRefrence.postQuestion(uid,
+          widget.viewModel.questions[widget.viewModel.currentQuestionIndex]);
+      await FirestoreRefrence.streakIncrement(
+        uid,
+        widget.loginViewModel.loggedInUser!.streak!,
+      );
       await Future.delayed(const Duration(seconds: 2)).then((value) {
+        if (widget.viewModel.currentQuestionIndex ==
+            widget.viewModel.questions.length - 1) {
+          widget.viewModel.clearQuestions();
+          widget.viewModel.fetchNewQuestions();
+          flipKey.currentState!.flip();
+          return;
+        }
         widget.viewModel.questions[widget.viewModel.currentQuestionIndex]
             .selectedAnswer = '';
         widget.viewModel.setCurrentQuestionIndex(
@@ -59,38 +73,51 @@ class _MCQScreenState extends State<MCQScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        children: [
-          const SizedBox(height: AppSizes.spacingSmall),
+      child: widget.viewModel.questions.isEmpty
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
+              physics: const NeverScrollableScrollPhysics(),
+              child: Column(
+                children: [
+                  const SizedBox(height: AppSizes.spacingSmall),
 
-          // Question Numbers
-          QuestionNumbers(widget: widget),
+                  // Question Numbers
+                  QuestionNumbers(widget: widget),
 
-          const SizedBox(height: AppSizes.shadowBlurRadiusMedium),
+                  const SizedBox(height: AppSizes.shadowBlurRadiusMedium),
 
-          // Question Care view
-          PageFlipBuilder(
-            key: flipKey,
-            frontBuilder: (BuildContext context) => cardFront(context),
-            backBuilder: (BuildContext context) => cardBack(context),
-            onFlipComplete: onFlip,
-            flipAxis: Axis.horizontal,
-            interactiveFlipEnabled: false,
-            maxTilt: 0.003,
-          ),
+                  // Question Care view
 
-          const SizedBox(height: AppSizes.spacingMedium),
+                  PageFlipBuilder(
+                    key: flipKey,
+                    frontBuilder: (BuildContext context) => cardFront(context),
+                    backBuilder: (BuildContext context) => cardBack(context),
+                    onFlipComplete: (p0) async {
+                      await onFlip(
+                        p0,
+                        context,
+                      );
+                    },
+                    flipAxis: Axis.horizontal,
+                    interactiveFlipEnabled: false,
+                    maxTilt: 0.003,
+                  ),
 
-          // Next and Previous Buttons
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              previewBtn(context),
-              nextBtn(context),
-            ],
-          ),
-        ],
-      ),
+                  const SizedBox(height: AppSizes.spacingMedium),
+
+                  // Next and Previous Buttons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      previewBtn(context),
+                      nextBtn(context),
+                    ],
+                  ),
+                ],
+              ),
+            ),
     );
   }
 
@@ -238,6 +265,18 @@ class _MCQScreenState extends State<MCQScreen> {
                     .viewModel
                     .questions[widget.viewModel.currentQuestionIndex]
                     .options[index];
+            bool isCorrect = widget
+                    .viewModel
+                    .questions[widget.viewModel.currentQuestionIndex]
+                    .selectedAnswer ==
+                widget.viewModel
+                    .questions[widget.viewModel.currentQuestionIndex].answer;
+            widget.viewModel.questions[widget.viewModel.currentQuestionIndex]
+                    .status =
+                isCorrect
+                    ? QuestionStatus.answeredCorrect
+                    : QuestionStatus.answeredWrong;
+
             flipKey.currentState!.flip();
           });
         },
@@ -300,8 +339,9 @@ class _MCQScreenState extends State<MCQScreen> {
         ],
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
+          const SizedBox(
             height: AppSizes.spacingMedium,
           ),
           if (widget.viewModel.questions[widget.viewModel.currentQuestionIndex]

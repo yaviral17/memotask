@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:memotask/Firestore/firestore_collections_and_documents.dart';
+import 'package:memotask/Models/usermodel.dart';
 import 'package:memotask/Screens/Home/main_navigator.dart';
 import 'package:memotask/components/snakbars.dart';
 import 'package:memotask/main.dart';
@@ -10,10 +12,21 @@ class LoginViewModel extends ChangeNotifier {
   String _email = '';
   String _password = '';
   bool _isLoading = false;
+  UserModel? _loggedInUser;
 
   String get email => _email;
   String get password => _password;
   bool get isLoading => _isLoading;
+  UserModel? get loggedInUser => _loggedInUser;
+
+  void getLoggedInUser({bool forced = false}) async {
+    if (_loggedInUser != null && !forced) {
+      return;
+    }
+    _loggedInUser =
+        await FirestoreRefrence.getUser(FirebaseAuth.instance.currentUser!.uid);
+    notifyListeners();
+  }
 
   void setEmail(String email) {
     if (email == _email) return;
@@ -45,6 +58,7 @@ class LoginViewModel extends ChangeNotifier {
         email: email,
         password: password,
       );
+
       log(credential.user!.email!);
       setIsLoading(false);
       showSuccessSnackBar(

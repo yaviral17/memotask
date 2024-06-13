@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:memotask/Screens/Authentication/login/view_models/login_view_model.dart';
+import 'package:memotask/Screens/Home/main_navigation_view_model.dart';
 import 'package:memotask/Screens/Home/mcq_list/view_models/mcq_screen_view_model.dart';
 import 'package:memotask/Screens/Home/mcq_list/views/mcq_screen_view.dart';
 import 'package:memotask/Screens/Home/profile/views/profile_view.dart';
@@ -15,11 +17,18 @@ class MainNavigator extends StatefulWidget {
 }
 
 class _MainNavigatorState extends State<MainNavigator> {
-  PageController pageController = PageController(initialPage: 0);
-  int currentIndex = 0;
+  late PageController pageController;
+  late int currentIndex;
+
   @override
   Widget build(BuildContext context) {
+    MainNavigatorViewModel mainNavigator =
+        Provider.of<MainNavigatorViewModel>(context);
     MCQViewModel mcqViewModel = Provider.of<MCQViewModel>(context);
+    LoginViewModel loginViewModel = Provider.of<LoginViewModel>(context);
+    loginViewModel.getLoggedInUser();
+    pageController = mainNavigator.pageController;
+    currentIndex = mainNavigator.currentIndex;
     // MCQViewModel mcqViewModel = Provider.of<MCQViewModel>(context);
     // MCQViewModel mcqViewModel = Provider.of<MCQViewModel>(context);
     List<String> titles = ['MCQs', 'Streaks', 'Profile'];
@@ -40,9 +49,14 @@ class _MainNavigatorState extends State<MainNavigator> {
           // Add your pages here
           MCQScreen(
             viewModel: mcqViewModel,
+            loginViewModel: loginViewModel,
           ),
-          StreakScreen(),
-          const ProfileView(),
+          StreakScreen(
+            loginViewModel: loginViewModel,
+          ),
+          ProfileView(
+            mainNavigator: mainNavigator,
+          ),
         ],
       ),
 
@@ -52,7 +66,8 @@ class _MainNavigatorState extends State<MainNavigator> {
         onTap: (value) {
           setState(() {
             currentIndex = value;
-            pageController.jumpToPage(value);
+            mainNavigator.pageController.jumpToPage(value);
+            mainNavigator.setCurrentIndex(value);
           });
         },
         items: <BottomNavigationBarItem>[

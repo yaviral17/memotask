@@ -2,11 +2,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:memotask/Screens/Authentication/login/views/login_view.dart';
+import 'package:memotask/Screens/Home/main_navigation_view_model.dart';
 import 'package:memotask/Utils/app_size.dart';
 
 class ProfileView extends StatelessWidget {
-  const ProfileView({super.key});
-
+  ProfileView({
+    super.key,
+    required this.mainNavigator,
+  });
+  MainNavigatorViewModel mainNavigator;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -19,12 +23,18 @@ class ProfileView extends StatelessWidget {
           child: Column(
             children: [
               ProfileScreenOptions(
+                onPressed: () {
+                  // mainNavigator.pageController.jumpToPage(0);
+                },
                 lable: "MCQs",
                 backgroundColor:
                     Theme.of(context).colorScheme.primary.withOpacity(0.9),
                 isLogout: false,
               ),
               ProfileScreenOptions(
+                onPressed: () {
+                  // mainNavigator.pageController.jumpToPage(1);
+                },
                 lable: "Streaks",
                 backgroundColor:
                     Theme.of(context).colorScheme.primary.withOpacity(0.9),
@@ -91,15 +101,17 @@ class ProfileScreenOptions extends StatelessWidget {
             ),
           ),
         ),
-        onPressed: () {
-          FirebaseAuth.instance.signOut();
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const LoginView(),
-            ),
-          );
-        },
+        onPressed: isLogout
+            ? () {
+                FirebaseAuth.instance.signOut();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LoginView(),
+                  ),
+                );
+              }
+            : onPressed ?? () {},
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

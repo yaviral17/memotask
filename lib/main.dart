@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:memotask/Screens/Authentication/login/view_models/login_view_model.dart';
 import 'package:memotask/Screens/Authentication/login/views/login_view.dart';
 import 'package:memotask/Screens/Authentication/signup/view_models/signup_view_model.dart';
+import 'package:memotask/Screens/Home/main_navigation_view_model.dart';
 import 'package:memotask/Screens/Home/main_navigator.dart';
 import 'package:memotask/Screens/Home/mcq_list/view_models/mcq_screen_view_model.dart';
 import 'package:memotask/Utils/app_theme.dart';
@@ -31,6 +32,8 @@ class App extends StatelessWidget {
             create: (BuildContext context) => SignUpViewModel()),
         ChangeNotifierProvider(
             create: (BuildContext context) => MCQViewModel()),
+        ChangeNotifierProvider(
+            create: (BuildContext context) => MainNavigatorViewModel()),
       ],
       child: MaterialApp(
         navigatorKey: NavigationService.navigatorKey,

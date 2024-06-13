@@ -1,16 +1,43 @@
-# memotask
+# Memotask
 
-A new Flutter project.
+This is a MCQ based quiz app. It is a simple quiz app that has a list of questions and the user can select the correct answer from the given options. The user can also see the correct answer after submitting the answer. The user can maintain a streak.
 
-## Getting Started
+## How to setup this flutter project
+> Clone the repository
+```bash
+git clone https://github.com/yaviral17/memotask.git
+```
+> Change the directory
+```bash
+cd memotask
+```
+> Get the dependencies
+```bash
+flutter pub get
+```
+> Setup firebase project
+```bash 
+flutterfire configure --project=<project_id>
+```
+> Add the google-services.json file in android/app folder
+```bash
+Download the google-services.json file from firebase console and add it in android/app folder
+```
+>  if you want to debug the app
+```bash
+flutter run
+```
+>  if you want to build the app
+```bash
+flutter build apk --split-per-abi
+```
 
-This project is a starting point for a Flutter application.
+## How To Use This App
+- Before starting the quiz, the user needs to login/sign in with email and password.
+- ![Login Screen](app-preview/images/login.png)  
+- ![SignUp Screen](app-preview/images/signup.png)  
+- After login, the user can see the list of questions.
+- ![Home Screen](app-preview/videos/A142%202024-06-13%2017-52-10.gif)
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Direct Download app
+- [Download the app](app-armeabi-v7a-release.apk)

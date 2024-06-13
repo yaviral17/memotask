@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math' as math;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:memotask/Models/mcqModel.dart';
@@ -48,31 +49,47 @@ class FirestoreRefrence {
     return null;
   }
 
-  static Future<void> updateStreak(String uid) async {
-    Streak? streak = await getSreak(uid);
-    if (streak == null) {
+  static Future<void> streakIncrement(String uid, Streak streak) async {
+    // check if last  activity has datetime of today
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final dateToCheck = streak.lastActivity;
+    final aDate =
+        DateTime(dateToCheck.year, dateToCheck.month, dateToCheck.day);
+
+    if (aDate == today) {
+      log("Streak already incremented");
       return;
     }
-    List<DateTime> streakDates = streak.streakDates;
-    DateTime lastActivity = streak.lastActivity;
-    DateTime today = DateTime.now();
-    if (lastActivity.day == today.day) {
-      return;
-    }
-    if (lastActivity.day + 1 == today.day) {
-      streakDates.add(today);
+
+    if (streak.lastActivity.difference(now).inHours > 24) {
+      streak.longestStreak =
+          math.max(streak.longestStreak, streak.streakLength);
+      streak.streakLength = 0;
+      streak.streakDates.add(now);
+      streak.lastActivity = now;
+      streak.startDate = now;
     } else {
-      streakDates.clear();
-      streakDates.add(today);
+      int countStreak = 0;
+      for (int i = streak.streakDates.length - 1; i >= 1; i--) {
+        if (streak.streakDates[i]
+                .difference(streak.streakDates[i - 1])
+                .inHours <
+            24) {
+          countStreak++;
+        }
+        log('Count Streak: $countStreak');
+      }
+      countStreak++;
+
+      if (countStreak != streak.streakLength) {
+        streak.streakLength = countStreak;
+      }
+
+      streak.streakLength++;
+      streak.streakDates.add(now);
+      streak.lastActivity = now;
     }
-    Streak newStreak = Streak(
-      startDate: streak.startDate,
-      endDate: streak.endDate,
-      streakLength: streak.streakLength,
-      longestStreak: streak.longestStreak,
-      lastActivity: today,
-      streakDates: streakDates,
-    );
-    await userCollection.doc(uid).update({'streak': newStreak.toJson()});
+    await userCollection.doc(uid).update({'streak': streak.toJson()});
   }
 }
