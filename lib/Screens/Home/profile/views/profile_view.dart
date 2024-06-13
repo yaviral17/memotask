@@ -145,7 +145,7 @@ class UserProfileCardView extends StatelessWidget {
       padding: const EdgeInsets.only(
         left: AppSizes.padding,
         right: AppSizes.padding,
-        top: AppSizes.paddingLarge,
+        top: AppSizes.paddingLarge + AppSizes.paddingLarge,
         bottom: AppSizes.padding,
       ),
       decoration: BoxDecoration(

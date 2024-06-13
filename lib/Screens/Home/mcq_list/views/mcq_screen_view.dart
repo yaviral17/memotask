@@ -52,7 +52,7 @@ class _MCQScreenState extends State<MCQScreen> {
         uid,
         widget.loginViewModel.loggedInUser!.streak!,
       );
-      await Future.delayed(const Duration(seconds: 2)).then((value) {
+      await Future.delayed(const Duration(seconds: 1)).then((value) {
         if (widget.viewModel.currentQuestionIndex ==
             widget.viewModel.questions.length - 1) {
           widget.viewModel.clearQuestions();
@@ -359,20 +359,39 @@ class _MCQScreenState extends State<MCQScreen> {
               size: AppSizes.getIdealWidth(100, context),
               color: Theme.of(context).colorScheme.error,
             ),
-          SizedBox(
+          const SizedBox(
             height: AppSizes.spacingMedium,
           ),
           Text(
-            widget.viewModel.questions[widget.viewModel.currentQuestionIndex]
-                .answer,
+            "Correct Answer : ${widget.viewModel.questions[widget.viewModel.currentQuestionIndex].answer}",
+            textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headline6!.copyWith(
                   color: Theme.of(context).colorScheme.onPrimary,
                   fontWeight: FontWeight.w400,
                 ),
           ),
-          SizedBox(
+          const SizedBox(
             height: AppSizes.spacingMedium,
           ),
+          Text(
+            "Your Answer : ${widget.viewModel.questions[widget.viewModel.currentQuestionIndex].selectedAnswer}",
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headline6!.copyWith(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontWeight: FontWeight.w400,
+                ),
+          ),
+          const SizedBox(
+            height: AppSizes.spacingMedium,
+          ),
+          Text(
+            "Loading Next Question...",
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headline6!.copyWith(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontWeight: FontWeight.w400,
+                ),
+          )
           // ElevatedButton(
           //   style: ElevatedButton.styleFrom(
           //     primary: Theme.of(context).colorScheme.primary,
