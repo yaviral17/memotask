@@ -9,7 +9,7 @@ import 'package:memotask/components/snakbars.dart';
 import 'package:provider/provider.dart';
 
 class LoginView extends StatelessWidget {
-  const LoginView({super.key});
+  LoginView({super.key});
 
   void onLogin({
     required BuildContext context,
@@ -34,11 +34,13 @@ class LoginView extends StatelessWidget {
     );
   }
 
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     LoginViewModel viewModel = Provider.of<LoginViewModel>(context);
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
+
     return Scaffold(
       // appBar: AppBarView(
       //   title: 'Login',
@@ -65,6 +67,9 @@ class LoginView extends StatelessWidget {
               const SizedBox(height: AppSizes.spacingLarge),
               AuthenticationTextFeildView(
                 controller: emailController,
+                onChanged: (value) {
+                  viewModel.setEmail(value);
+                },
                 hintText: 'Email',
                 icon: const Icon(Icons.alternate_email),
                 height: AppSizes.textFieldHeightMedium,
@@ -72,6 +77,9 @@ class LoginView extends StatelessWidget {
               const SizedBox(height: AppSizes.spacingSmall),
               AuthenticationTextFeildView(
                 controller: passwordController,
+                onChanged: (value) {
+                  viewModel.setPassword(value);
+                },
                 hintText: 'Password',
                 icon: const Icon(Iconsax.lock_1),
                 isPassword: true,

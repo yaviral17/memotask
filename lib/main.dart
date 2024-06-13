@@ -49,7 +49,7 @@ class App extends StatelessWidget {
             if (snapshot.hasData) {
               return const MainNavigator();
             }
-            return const LoginView();
+            return LoginView();
           },
         ),
       ),

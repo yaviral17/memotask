@@ -32,14 +32,12 @@ class LoginViewModel extends ChangeNotifier {
     if (email == _email) return;
     if (email.isEmpty) return;
     _email = email;
-    notifyListeners();
   }
 
   void setPassword(String password) {
     if (password == _password) return;
     if (password.isEmpty) return;
     _password = password;
-    notifyListeners();
   }
 
   void setIsLoading(bool isLoading) {

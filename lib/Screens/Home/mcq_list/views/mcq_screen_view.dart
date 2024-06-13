@@ -10,6 +10,7 @@ import 'package:memotask/Screens/Authentication/login/view_models/login_view_mod
 import 'package:memotask/Screens/Home/mcq_list/view_models/mcq_screen_view_model.dart';
 import 'package:memotask/Screens/Home/mcq_list/views/question_number_header_view.dart';
 import 'package:memotask/Utils/app_size.dart';
+import 'package:memotask/Utils/const_colors.dart';
 import 'package:memotask/main.dart';
 import 'package:page_flip_builder/page_flip_builder.dart';
 import 'package:provider/provider.dart';
@@ -86,8 +87,6 @@ class _MCQScreenState extends State<MCQScreen> {
                   // Question Numbers
                   QuestionNumbers(widget: widget),
 
-                  const SizedBox(height: AppSizes.shadowBlurRadiusMedium),
-
                   // Question Care view
 
                   PageFlipBuilder(
@@ -105,7 +104,7 @@ class _MCQScreenState extends State<MCQScreen> {
                     maxTilt: 0.003,
                   ),
 
-                  const SizedBox(height: AppSizes.spacingMedium),
+                  SizedBox(height: AppSizes.getDeviceHeight(context) * 0.02),
 
                   // Next and Previous Buttons
                   Row(
@@ -133,7 +132,7 @@ class _MCQScreenState extends State<MCQScreen> {
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
         minimumSize: Size(
           AppSizes.buttonWidthMedium,
-          AppSizes.buttonHeightMedium,
+          AppSizes.buttonHeight,
         ),
         maximumSize: Size(
           AppSizes.buttonWidthMedium,
@@ -175,7 +174,7 @@ class _MCQScreenState extends State<MCQScreen> {
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
         minimumSize: Size(
           AppSizes.buttonWidthMedium,
-          AppSizes.buttonHeightMedium,
+          AppSizes.buttonHeight,
         ),
         maximumSize: Size(
           AppSizes.buttonWidthMedium,
@@ -196,7 +195,10 @@ class _MCQScreenState extends State<MCQScreen> {
 
   Widget cardFront(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(AppSizes.padding),
+      margin: const EdgeInsets.symmetric(
+        horizontal: AppSizes.padding,
+        vertical: AppSizes.spacingSmall,
+      ),
       width: AppSizes.getDeviceWidth(context),
       height: AppSizes.getDeviceHeight(context) * 0.56,
       decoration: BoxDecoration(
@@ -229,15 +231,16 @@ class _MCQScreenState extends State<MCQScreen> {
           const Spacer(),
           // Question
           Container(
-            padding: const EdgeInsets.all(AppSizes.spacing),
+            padding: const EdgeInsets.symmetric(
+                horizontal: AppSizes.spacingSmall, vertical: 5),
             child: Text(
               widget.viewModel.questions[widget.viewModel.currentQuestionIndex]
                   .question,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headline6!.copyWith(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontWeight: FontWeight.w400,
+                  fontSize: AppSizes.getDeviceWidth(context) * 0.05),
             ),
           ),
           const Spacer(),
@@ -283,8 +286,9 @@ class _MCQScreenState extends State<MCQScreen> {
         child: Container(
           margin: const EdgeInsets.symmetric(
             horizontal: AppSizes.paddingMedium,
-            vertical: AppSizes.spacingSmall,
+            vertical: 6,
           ),
+          height: AppSizes.getDeviceHeight(context) * 0.07,
           width: AppSizes.getDeviceWidth(context),
           decoration: BoxDecoration(
             color: widget
@@ -305,14 +309,21 @@ class _MCQScreenState extends State<MCQScreen> {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(AppSizes.padding),
-            child: Text(
-              widget.viewModel.questions[widget.viewModel.currentQuestionIndex]
-                  .options[index],
-              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    fontWeight: FontWeight.w500,
-                  ),
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSizes.padding,
+              vertical: AppSizes.getDeviceHeight(context) * 0.01,
+            ),
+            child: Center(
+              child: Text(
+                widget
+                    .viewModel
+                    .questions[widget.viewModel.currentQuestionIndex]
+                    .options[index],
+                style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      fontWeight: FontWeight.w500,
+                    ),
+              ),
             ),
           ),
         ),
@@ -322,7 +333,10 @@ class _MCQScreenState extends State<MCQScreen> {
 
   Widget cardBack(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(AppSizes.padding),
+      margin: const EdgeInsets.symmetric(
+        horizontal: AppSizes.padding,
+        vertical: AppSizes.spacingSmall,
+      ),
       width: AppSizes.getDeviceWidth(context),
       height: AppSizes.getDeviceHeight(context) * 0.56,
       decoration: BoxDecoration(
@@ -385,11 +399,12 @@ class _MCQScreenState extends State<MCQScreen> {
             height: AppSizes.spacingMedium,
           ),
           Text(
-            "Loading Next Question...",
+            "Moving to next question in 1 second...",
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headline6!.copyWith(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  fontWeight: FontWeight.w400,
+            style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                  color: AppColors.success,
+                  fontWeight: FontWeight.w600,
+                  fontSize: AppSizes.getDeviceWidth(context) * 0.04,
                 ),
           )
           // ElevatedButton(

@@ -107,7 +107,7 @@ class ProfileScreenOptions extends StatelessWidget {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const LoginView(),
+                    builder: (context) => LoginView(),
                   ),
                 );
               }
@@ -142,10 +142,10 @@ class UserProfileCardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(
+      padding: EdgeInsets.only(
         left: AppSizes.padding,
         right: AppSizes.padding,
-        top: AppSizes.paddingLarge + AppSizes.paddingLarge,
+        top: AppSizes.getDeviceHeight(context) * 0.054,
         bottom: AppSizes.padding,
       ),
       decoration: BoxDecoration(
@@ -162,7 +162,7 @@ class UserProfileCardView extends StatelessWidget {
         children: [
           CircleAvatar(
             backgroundColor: Theme.of(context).colorScheme.primary,
-            radius: AppSizes.circularAvatarSizeLarge,
+            radius: AppSizes.getDeviceWidth(context) * 0.12,
             child: const Icon(
               Icons.person,
               size: AppSizes.iconSizeLarge,

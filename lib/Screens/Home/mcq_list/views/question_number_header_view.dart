@@ -14,6 +14,7 @@ class QuestionNumbers extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        // Question Numbers 1-5
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -25,8 +26,8 @@ class QuestionNumbers extends StatelessWidget {
                   // widget.viewModel.setCurrentQuestionIndex(index);
                 },
                 child: Container(
-                  width: AppSizes.getIdealWidth(36, context),
-                  height: AppSizes.getIdealWidth(36, context),
+                  width: AppSizes.getIdealWidth(32, context),
+                  height: AppSizes.getIdealWidth(32, context),
                   decoration: BoxDecoration(
                     color: widget.viewModel.currentQuestionIndex == index
                         ? Theme.of(context).colorScheme.tertiaryContainer
@@ -41,7 +42,7 @@ class QuestionNumbers extends StatelessWidget {
                   child: Center(
                     child: Text(
                       (index + 1).toString(),
-                      style: Theme.of(context).textTheme.headline6,
+                      style: Theme.of(context).textTheme.bodyText2,
                     ),
                   ),
                 ),
@@ -49,7 +50,8 @@ class QuestionNumbers extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: AppSizes.spacingSmall),
+        SizedBox(height: AppSizes.getDeviceHeight(context) * 0.01),
+        // Question Numbers 6-10
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -64,8 +66,8 @@ class QuestionNumbers extends StatelessWidget {
                   //     index + (widget.viewModel.questions.length ~/ 2));
                 },
                 child: Container(
-                  width: AppSizes.getIdealWidth(36, context),
-                  height: AppSizes.getIdealWidth(36, context),
+                  width: AppSizes.getIdealWidth(32, context),
+                  height: AppSizes.getIdealWidth(32, context),
                   decoration: BoxDecoration(
                     color: widget.viewModel.currentQuestionIndex ==
                             (index + (widget.viewModel.questions.length ~/ 2))
@@ -82,7 +84,7 @@ class QuestionNumbers extends StatelessWidget {
                     child: Text(
                       (index + 1 + (widget.viewModel.questions.length ~/ 2))
                           .toString(),
-                      style: Theme.of(context).textTheme.headline6,
+                      style: Theme.of(context).textTheme.bodyText2,
                     ),
                   ),
                 ),
@@ -92,6 +94,7 @@ class QuestionNumbers extends StatelessWidget {
             // Question Card
           ],
         ),
+        SizedBox(height: AppSizes.getDeviceHeight(context) * 0.01),
       ],
     );
   }

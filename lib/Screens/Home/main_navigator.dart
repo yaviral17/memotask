@@ -31,7 +31,8 @@ class _MainNavigatorState extends State<MainNavigator> {
     currentIndex = mainNavigator.currentIndex;
     // MCQViewModel mcqViewModel = Provider.of<MCQViewModel>(context);
     // MCQViewModel mcqViewModel = Provider.of<MCQViewModel>(context);
-    List<String> titles = ['MCQs', 'Streaks', 'Profile'];
+    List<String> titles = ['Trivia', 'Streaks', 'Profile'];
+
     return Scaffold(
       appBar: currentIndex != titles.length - 1
           ? AppBarView(
@@ -73,7 +74,7 @@ class _MainNavigatorState extends State<MainNavigator> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: currentIndex == 0 ? Icon(Iconsax.book_1) : Icon(Iconsax.book),
-            label: 'MCQs',
+            label: 'Trivia',
           ),
           BottomNavigationBarItem(
             icon: currentIndex == 1
