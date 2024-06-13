@@ -32,12 +32,25 @@ flutter run
 flutter build apk --split-per-abi
 ```
 
-## How To Use This App
+<!-- ## How To Use This App
 - Before starting the quiz, the user needs to login/sign in with email and password.
 - ![Login Screen](app-preview/images/login.png)  
 - ![SignUp Screen](app-preview/images/signup.png)  
 - After login, the user can see the list of questions.
 - ![Home Screen](app-preview/videos/A142%202024-06-13%2017-52-10.gif)
+ -->
+
+## Backend 
+> - #Firebase Authentication
+> ![Firebase Authentication](app-preview/images/firebaseauth.png)
+> - User Collection
+> ![Firebase Firestore](app-preview/images/user_collection.png)
+> - User Data
+> ![Firebase Firestore](app-preview/images/user_doc.png)
+> - Question Collection
+> ![Firebase Firestore](app-preview/images/question_coll.png)
+
+
 
 ## Direct Download app
 - [Download the app](app-armeabi-v7a-release.apk)
