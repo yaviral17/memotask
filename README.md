@@ -32,13 +32,12 @@ flutter run
 flutter build apk --split-per-abi
 ```
 
-<!-- ## How To Use This App
+## How To Use This App
 - Before starting the quiz, the user needs to login/sign in with email and password.
 - ![Login Screen](app-preview/images/login.png)  
 - ![SignUp Screen](app-preview/images/signup.png)  
 - After login, the user can see the list of questions.
 - ![Home Screen](app-preview/videos/A142%202024-06-13%2017-52-10.gif)
- -->
 
 ## Backend 
 > - #Firebase Authentication
